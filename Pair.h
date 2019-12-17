@@ -1,3 +1,4 @@
+#ifndef Pair
 class Pair{
     private:
         int node;
@@ -7,4 +8,7 @@ class Pair{
         Pair(int node, char edge);
         int getNode();
         char getEdge();
+        void setNode(int node);
+        void setEdge(char edge);
 };
+#endif
