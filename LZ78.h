@@ -1,4 +1,5 @@
 #ifndef LZ78
+#define LZ78
 #include "Pair.h"
 #include <string>
 #include <vector> // For the tree
@@ -13,17 +14,19 @@ private:
     int lastCharsIndex;
     // The length of the array tree.
     int sizeOfTree;
+    Pair* max_code_recuresive(int i, std::string text, Pair* parent, int n_son, int* currLength);
+
 
     
 public:
     LZ78(std::string input, int lastCharsIndex);
-    void encode();
+    void encode(std::string input);
     Pair* getPairs();
     void printTree();
-    std::string maxCode();
+    Pair* maxCode(std::string text, int* currLength);
     int maxCodeLength();
     int getSizeOfTree();
-    void add(int node, char edge);
+    void add(int node, char edge, int n_son);
     ~LZ78();
 };
 #endif
