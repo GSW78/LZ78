@@ -1,11 +1,9 @@
-#ifndef Pair
-#define Pair
+	#ifndef Pair
 class Pair{
     private:
         int node;
-        int n_son; 
+        int n_son;
         char edge;
-
     public:
         Pair(int node, char edge, int n_son);
         int getNode();
