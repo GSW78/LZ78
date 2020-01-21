@@ -1,5 +1,4 @@
 #ifndef LZ78
-#define LZ78
 #include "Pair.h"
 #include <string>
 #include <vector> // For the tree
