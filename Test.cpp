@@ -20,11 +20,8 @@ bool Test::checkChars(std::string input){
     return true;
 }
 
-
-
 bool Test::checkAll(std::string input){
     bool flag = true;
-    std::cout<<"flag "<<flag<<"\n";
     if(!checkSize(input))
         flag = false;
     if(!checkChars(input))
