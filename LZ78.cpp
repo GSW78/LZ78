@@ -4,15 +4,12 @@
 using namespace std;
 
 
-
 LZ78::LZ78(std::string input,  int lastCharsIndex)
 {
     this->text = input;
     this->lastCharsIndex = lastCharsIndex;
     this->sizeOfTree = 0; // At the beginnig there are no pairs in the array.
 }
-
-
 
 /*
 @param node{int}
@@ -33,60 +30,87 @@ int LZ78::getSizeOfTree(){
 
 void LZ78::printTree(){
     
-    // Loop ont the array of the pairs, and print the node and the edge.
+    // Loop on the array of the pairs, and print the node and the edge.
     for (int i = 0; i < sizeOfTree; i++)
     {
         std::cout <<"("<< tree.at(i)->getNode()  << ", " << tree.at(i)->getEdge() << ", " << tree.at(i)->getN_son() << ")" << std::endl;
     }
 }
+
 LZ78::~LZ78()
 {
 }
 
-
 Pair* LZ78::max_code_recuresive (int i, std::string text, Pair* parent, int n_son, int* currLength) {
-    
-
     if (text == "") 
         return new Pair(-1, '*', -1);
 
-    char curr = text[0];    // ?? text[i]
+    char curr = text[0];
     int j;
-    *(currLength) = text.length()-1;        /////////////////////////////////////////////
+    *(currLength) = text.length()-1;
     
-    // std::cout << "iter " << i << " Text is << " << text << " >> curr-char is " << curr << std::endl;    
-
     for (j=0; j<sizeOfTree; j++) {
 
         Pair* pointer = NULL;
 
         try {
-            /*Pair**/ pointer = tree.at(j);   // at(j)??? int j=i ????
+            /*Pair**/ pointer = tree.at(j);
         } catch (const std::out_of_range& e) {
-            // std::cout << "here" << std::endl;
             return parent;
         }
-
-
-        // std::cout << "iter " << i << " NODE in tree " << tree.at(j)->getEdge() << std::endl;  //??????????
-
         if (pointer->getNode() == n_son && pointer->getNode() >= i && pointer->getEdge() == curr ) {
-            // std::cout << "IF: iter " << i << " Current text: " << text << " text to send: " << text.substr(/*i+1*/1, text.length())  << std::endl;
-            parent = pointer;
-            
+            parent = pointer;    
             return max_code_recuresive(i+1, text.substr(/*i+*/1, text.length()), parent, parent->getN_son(), currLength);  
-        }
-
-          
+        }    
     }
-
-    // std::cout << "HERE" << std::endl;
-
-    // if (parent != NULL)
-    //     std::cout << parent->getNode() << ", " << parent->getEdge() << std::endl;
-    // else
-    //     std::cout << "PARENT IS ROOT" << std::endl;    
-           
     return parent;
 }
 
+Pair* LZ78::maxCode(std::string text, int* currLength) {
+    // the tree is empty
+    if (this->tree.empty()) {
+        *(currLength)-=1;
+        return NULL;
+    }
+
+    Pair* parent = max_code_recuresive (0, text, NULL, 0, currLength);
+    return parent;
+}
+
+void LZ78::encode(std::string input){
+    
+    int son = 0;
+    int pos = -1;
+    int currWordLength = 0, currLength = input.length(), prevLength = input.length(), father;
+    char nodeLetter;
+    Pair* fatherNode;
+    string copiedInput = input;
+
+    while(currLength > 0)
+    {
+        //std::cout << "WHILE ==> copiedInput is " << copiedInput << std::endl;
+        //std::cout << "Before max_code: prevLength = " << prevLength << " , currLength = " << currLength << " , currWordLength = " << currWordLength << " , pos = " << pos << std::endl; 
+        son++;
+        prevLength = copiedInput.length();
+        fatherNode = maxCode(copiedInput, &currLength);
+        //std::cout << "After max_code: prevLength = " << prevLength << " , currLength = " << currLength << " , currWordLength = " << currWordLength << " , pos = " << pos << "\n" << std::endl; 
+
+        if (fatherNode == NULL) {
+            add (0,copiedInput[0], son);
+            copiedInput = copiedInput.substr(1, copiedInput.length());
+            pos++;
+            continue;
+        }
+
+        if (fatherNode->getNode() == -1)
+            return;
+		
+        currWordLength = prevLength - currLength;
+
+        copiedInput = copiedInput.substr(currWordLength);
+        pos += currWordLength;
+        nodeLetter = input[pos];
+        father = fatherNode->getNode() + 1;
+        add(father, nodeLetter, son);
+    }
+}
