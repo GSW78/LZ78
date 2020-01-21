@@ -1,4 +1,4 @@
-	#ifndef Pair
+#ifndef Pair
 class Pair{
     private:
         int node;
