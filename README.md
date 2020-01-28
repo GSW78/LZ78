@@ -6,9 +6,9 @@ https://github.com/GSW78/LZ78/projects/1
 
 To compile code using g++ compiler:
 Run at CMD(need to be in correct directory):
-g++ LZ78.cpp LZ78.h Pair.cpp Pair.h main.cpp Test.cpp Test.h -o LZ78
+g++ LZ78.cpp LZ78.h Pair.cpp Pair.h ValidateInput.cpp ValidateInput.h main.cpp -o LZ78
 
 To run code:
 Run at CMD(need to be in correct directory):
-LZ78.exe filename.txt
+./LZ78 filename.txt
 
