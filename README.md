@@ -1,6 +1,8 @@
 # LZ78
 implementation of the algorithm Lmpel-Ziv-78, encode.
 
+/*Authors : Dasi krakinovsky, Tamar Cohen, Riki Neustadt, Sara Borowski, Tzipporah Benmergui*/
+
 Task board:
 https://github.com/GSW78/LZ78/projects/1
 
