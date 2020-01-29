@@ -24,10 +24,16 @@ void LZ78::add(int node, char edge, int n_son)
 
 }
 
+/*
+Description : The function returns the size of the nodes of the tree
+*/
 int LZ78::getSizeOfTree(){
     return this->sizeOfTree;
 }
 
+/*
+Description : The function prints the tree
+*/
 void LZ78::printTree(){
     
     // Loop on the array of the pairs, and print the node and the edge.
@@ -37,10 +43,14 @@ void LZ78::printTree(){
     }
 }
 
-LZ78::~LZ78()
-{
-}
-
+/*
+@param index{int}
+@param text{string} 
+@param parent{Pair*} 
+@param n_son{int}
+@param currLength{int*}
+Description : The recursive function returns the maximum length of substring (from the text)
+*/
 Pair* LZ78::max_code_recuresive (int i, std::string text, Pair* parent, int n_son, int* currLength) {
     if (text == "") 
         return new Pair(-1, '*', -1);
@@ -54,18 +64,23 @@ Pair* LZ78::max_code_recuresive (int i, std::string text, Pair* parent, int n_so
         Pair* pointer = NULL;
 
         try {
-            /*Pair**/ pointer = tree.at(j);
+             pointer = tree.at(j);
         } catch (const std::out_of_range& e) {
             return parent;
         }
         if (pointer->getNode() == n_son && pointer->getNode() >= i && pointer->getEdge() == curr ) {
             parent = pointer;    
-            return max_code_recuresive(i+1, text.substr(/*i+*/1, text.length()), parent, parent->getN_son(), currLength);  
+            return max_code_recuresive(i+1, text.substr(1, text.length()), parent, parent->getN_son(), currLength);  
         }    
     }
     return parent;
 }
 
+/*
+@param text{string}
+@param currLength{int*}
+Description : Warpper function which returns the maximum length of substring (from the text) - calls the recursive function
+*/
 Pair* LZ78::maxCode(std::string text, int* currLength) {
     // the tree is empty
     if (this->tree.empty()) {
@@ -77,6 +92,10 @@ Pair* LZ78::maxCode(std::string text, int* currLength) {
     return parent;
 }
 
+/*
+@param input{string} 
+Description : The main function - creates the Lempel-Ziv tree
+*/
 void LZ78::encode(std::string input){
     
     int son = 0;
@@ -88,15 +107,14 @@ void LZ78::encode(std::string input){
 
     while(currLength > 0)
     {
-        //std::cout << "WHILE ==> copiedInput is " << copiedInput << std::endl;
-        //std::cout << "Before max_code: prevLength = " << prevLength << " , currLength = " << currLength << " , currWordLength = " << currWordLength << " , pos = " << pos << std::endl; 
+                
         son++;
         prevLength = copiedInput.length();
         fatherNode = maxCode(copiedInput, &currLength);
-        //std::cout << "After max_code: prevLength = " << prevLength << " , currLength = " << currLength << " , currWordLength = " << currWordLength << " , pos = " << pos << "\n" << std::endl; 
+        
 
         if (fatherNode == NULL) {
-            add (0,copiedInput[0], son);
+            add (0,copiedInput[0], son); // add a new node to the root
             copiedInput = copiedInput.substr(1, copiedInput.length());
             pos++;
             continue;
@@ -111,6 +129,8 @@ void LZ78::encode(std::string input){
         pos += currWordLength;
         nodeLetter = input[pos];
         father = fatherNode->getNode() + 1;
-        add(father, nodeLetter, son);
+        add(father, nodeLetter, son);   // after finding the the substring add it to the tree 
     }
 }
+
+LZ78::~LZ78() {}
